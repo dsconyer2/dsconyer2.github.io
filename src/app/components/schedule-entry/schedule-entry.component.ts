@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScheduleEntryComponent implements OnInit {
 
+  sePlayers: Number = 0;
+  seCourts: Number= 0;
+
   constructor() { }
 
   ngOnInit() {

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HelpComponent } from "./components/help/help.component";
 import { HomeComponent } from './components/home/home.component';
 import { ScheduleEntryComponent } from './components/schedule-entry/schedule-entry.component';
+import { ScheduleGeneratorComponent } from './components/schedule-generator/schedule-generator.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'schedule-entry',
     component: ScheduleEntryComponent
+  },
+  {
+    path: 'schedule-generator',
+    component: ScheduleGeneratorComponent
   },
   {
     path: 'help',

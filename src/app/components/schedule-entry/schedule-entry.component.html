@@ -1,3 +1,15 @@
-<p>
-  schedule-entry works!
-</p>
+<div>
+  <Label>
+    Number of Players
+  </Label>
+  <input type="number" name="nbrOfPlayersInput"  
+  ngModel [(ngModel)]=sePlayers #nbrOfPlayersInput autofocus>
+  <br>
+  <Label>
+    Number of Courts
+  </Label>
+  <input type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput" 
+  ngModel [(ngModel)]=seCourts #nbrOfCourtsInput=ngModel> 
+  <br>
+  <button type="submit" [routerLink]="['/schedule-generator']">Start</button>
+</div>
