@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { HelpComponent } from "./components/help/help.component";
+import { RouterModule, Routes } from '@angular/router';
+import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
-import { ScheduleEntryComponent } from './components/schedule-entry/schedule-entry.component';
-import { ScheduleGeneratorComponent } from './components/schedule-generator/schedule-generator.component';
+import { ScheduleEntryComponent } from './features/scheduler/components/schedule-entry/schedule-entry.component';
+import { ScheduleGeneratorComponent } from './features/scheduler/components/schedule-generator/schedule-generator.component';
+import { SchedulerComponent } from './features/scheduler/scheduler.component';
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'scheduler',
+    component: SchedulerComponent
   },
   {
     path: 'schedule-entry',

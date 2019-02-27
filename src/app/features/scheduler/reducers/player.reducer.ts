@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import * as actions from '../actions/scheduler.actions';
 export interface PlayerEntity {
+  id: number;
   playerId: number;
   isPlayerAvailable: boolean;
   isByeAvailable: boolean;
@@ -12,8 +13,8 @@ export interface State extends EntityState<PlayerEntity> { }
 const initialState: State = {
   ids: ['1', '2'],
   entities: {
-    1: { playerId: 1, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 },
-    2: { playerId: 2, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 }
+    1: { id: 1, playerId: 1, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 },
+    2: { id: 2, playerId: 2, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 }
   }
 };
 

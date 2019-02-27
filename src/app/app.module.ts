@@ -11,17 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
-import { ScheduleEntryComponent } from './components/schedule-entry/schedule-entry.component';
-import { ScheduleGeneratorComponent } from './components/schedule-generator/schedule-generator.component';
+import { SchedulerModule } from './features/scheduler/scheduler.module';
 import { reducers } from './reducers';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ScheduleGeneratorComponent,
     HelpComponent,
-    HomeComponent,
-    ScheduleEntryComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +27,7 @@ import { reducers } from './reducers';
     MatIconModule,
     BrowserAnimationsModule,
     FormsModule,
+    SchedulerModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([])

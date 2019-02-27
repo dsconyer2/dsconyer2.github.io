@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { PlayerEntity } from '../reducers/player.reducer';
 
-// let myId = 99;
+let myId = 10;
 export const ADD_PLAYER = '[schedulerFeature] add  player';
 export class PlayerAdded implements Action {
   readonly type = ADD_PLAYER;
@@ -11,7 +11,8 @@ export class PlayerAdded implements Action {
       playerId,
     isPlayerAvailable,
     isByeAvailable,
-    byeRound
+    byeRound,
+    id: myId++
     };
    }
 }

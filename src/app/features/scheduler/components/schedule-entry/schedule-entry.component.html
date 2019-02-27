@@ -1,0 +1,18 @@
+
+<form #form="ngForm">
+<div>
+  <Label>
+    Number of Players
+  </Label>
+  <input class="form-control" type="number" name="nbrOfPlayersInput"
+  ngModel [(ngModel)]="sePlayers" #nbrOfPlayersInput="ngModel" autofocus>
+  <br>
+  <Label>
+    Number of Courts
+  </Label>
+  <input class="form-control" type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput"
+  ngModel [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
+  <br>
+  <button type="submit" (click)="submit()">Start</button>
+</div>
+</form>
