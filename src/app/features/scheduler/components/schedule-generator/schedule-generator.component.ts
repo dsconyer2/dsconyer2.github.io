@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Player } from '../../models';
 
 
@@ -12,7 +12,7 @@ export class ScheduleGeneratorComponent implements OnInit {
   nbrOfPlayers = 17;
   nbrOfCourts = 3;
   playersPerCourt = 4;
-  players: Player[] = [];
+  @Input() players: Player[] = [];
 
   nbrOfByePlayers: number = this.nbrOfPlayers - (this.nbrOfCourts * this.playersPerCourt);
   byeList: Player[] = [];

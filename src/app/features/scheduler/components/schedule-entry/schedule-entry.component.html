@@ -13,6 +13,12 @@
   <input class="form-control" type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput"
   ngModel [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
   <br>
+  <Label>
+    Number of Players per Court
+  </Label>
+  <input class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput"
+  ngModel [(ngModel)]="sePlayersPerCourt" #nbrOfPlayersPerCourtInput="ngModel">
+  <br>
   <button type="submit" (click)="submit()">Start</button>
 </div>
 </form>
