@@ -1,4 +1,7 @@
 <div>
+  <label>Nbr of players = {{schedulerSettings[0].nbrOfPlayers}}</label> <br>
+  <label>Nbr of courts = {{schedulerSettings[0].nbrOfCourts}}</label> <br>
+  <label>Nbr of players per court = {{schedulerSettings[0].nbrOfPlayersPerCourt}}</label> <br>
   <label>Nbr of bye players = {{nbrOfByePlayers}}</label> <br>
   <label>Bye Round = </label>{{byeRound}} <br>
   <label>Bye Players</label><br>
@@ -7,8 +10,12 @@
     <th>Player Available</th>
     <th>Bye Available</th>
     <th>Bye Round</th>
-    <tr for>
-      <td></td>
+    <tr class="list-unstyled"  *ngFor="let player of myPlayers">
+      <td>{{player.playerId}}</td>
+      <td>{{player.isPlayerAvailable}}</td>
+      <td>{{player.isByeAvailable}}</td>
+      <td>{{player.byeRound}}</td>
     </tr>
   </table>
 </div>
+

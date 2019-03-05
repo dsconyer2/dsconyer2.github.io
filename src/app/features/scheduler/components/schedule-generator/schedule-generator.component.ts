@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Player } from '../../models';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Player, SchedulerSettings } from '../../models';
+import { SchedulerState } from '../../reducers';
 
 
 @Component({
@@ -9,30 +11,28 @@ import { Player } from '../../models';
 })
 export class ScheduleGeneratorComponent implements OnInit {
 
-  nbrOfPlayers = 17;
-  nbrOfCourts = 3;
-  playersPerCourt = 4;
-  players: Player[] = [];
 
-  nbrOfByePlayers: number = this.nbrOfPlayers - (this.nbrOfCourts * this.playersPerCourt);
+  @Input() myPlayers: Player[];
+  @Input() schedulerSettings: SchedulerSettings[];
+
+  nbrOfByePlayers: number;
+
   byeList: Player[] = [];
   byeRound = 0;
 
-  constructor() { }
+  constructor(private store: Store<SchedulerState>) { }
 
   ngOnInit() {
     this.schedulePLayers();
   }
 
-  initializePlayers() {
-    for (let i = 0; i < this.nbrOfPlayers; i++) {
-      this.players.push({
-        playerId: i + 1,
-        isPlayerAvailable: true,
-        isByeAvailable: true,
-        byeRound: 0
-      });
-    }
+  initialize() {
+    this.nbrOfByePlayers = this.schedulerSettings[0].nbrOfPlayers -
+                  (this.schedulerSettings[0].nbrOfCourts * this.schedulerSettings[0].nbrOfPlayersPerCourt);
+    // this.mySchedulerSettings = this.schedulerSettings[0];
+    // this.nbrOfPlayers = this.mySchedulerSettings.nbrOfPlayers;
+    // this.nbrOfCourts = this.mySchedulerSettings.nbrOfCourts;
+    // this.playersPerCourt = this.mySchedulerSettings.nbrOfPlayersPerCourt;
   }
 
   determineByePlayers() {
@@ -59,7 +59,7 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   playersAvailableForBye() {
-    return this.players.filter( aPlayer => aPlayer.isByeAvailable);
+    return this.myPlayers.filter( aPlayer => aPlayer.isByeAvailable);
   }
 
   pickByePlayers(availableByePlayers: Player[]) {
@@ -72,8 +72,8 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   schedulePLayers() {
-    this.initializePlayers();
-    this.determineByePlayers();
+    this.initialize();
+    // this.determineByePlayers();
     console.log('Number of bye players = ', this.nbrOfByePlayers);
     console.log('Bye Round = ', this.byeRound);
     console.table(this.byeList);
