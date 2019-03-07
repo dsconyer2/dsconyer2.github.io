@@ -23,7 +23,6 @@ export class ScheduleEntryComponent implements OnInit {
     for (let index = 0; index < this.sePlayers; index++) {
       this.store.dispatch(new PlayerAdded(index, true, true, 0));
     }
-
-    this.store.dispatch(new SchedulerSettingsUpdated(2, this.seCourts, this.sePlayersPerCourt ));
+    this.store.dispatch(new SchedulerSettingsUpdated(1, this.sePlayers, this.seCourts, this.sePlayersPerCourt));
   }
 }

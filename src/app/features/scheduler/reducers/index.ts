@@ -1,16 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Player, SchedulerSettings } from '../models';
 import * as fromPlayerManager from './player.reducer';
-import * as fromSchedulerSettingsManager from './scheduler-settings.reducer';
+import * as fromSchedulerManager from './scheduler.reducer';
 
 export interface SchedulerState {
   players: fromPlayerManager.State;
-  schedulerSettings: fromSchedulerSettingsManager.State;
+  schedulerSettings: fromSchedulerManager.State;
 }
 
 export const reducers = {
   players: fromPlayerManager.reducer,
-  schedulerSettings: fromSchedulerSettingsManager.reducer
+  schedulerSettings: fromSchedulerManager.reducer
 };
 
 // 1. Create a Feature Selector
@@ -21,11 +21,12 @@ const selectSchedulerSettings = createSelector(selectSchedulerFeature, f => f.sc
 
 // 3. Create any "helpers" you might need (optional)
 const { selectAll: selectPlayerEntityArray } = fromPlayerManager.adapter.getSelectors(selectPlayers);
-const { selectAll: selectSchedulerSettingsEntityArray } = fromSchedulerSettingsManager.adapter.getSelectors(selectSchedulerSettings);
+const { selectAll: selectSchedulerSettingsEntityArray } = fromSchedulerManager.adapter.getSelectors(selectSchedulerSettings);
 
 // 4. Create a selector for what the component needs.
 
 // TodoEntity[] => TodoListItem[]
 export const selectPlayerEntities = createSelector(selectPlayerEntityArray, t => t.map(x => x as Player));
-export const selectSchedulerSettingsEntities = createSelector(selectSchedulerSettingsEntityArray, t => t.map(x => x as SchedulerSettings));
+export const selectSchedulerSettingsEntities =
+                createSelector(selectSchedulerSettingsEntityArray, t => t.map(x => x as SchedulerSettings));
 

@@ -6,7 +6,10 @@ export interface Player {
 }
 
 export interface SchedulerSettings {
-    id: number;
-    courts: number;
-    playersPerCourt: number;
+  id: number;
+  nbrOfPlayers: number;
+  nbrOfCourts: number;
+  nbrOfPlayersPerCourt: number;
 }
+
+
