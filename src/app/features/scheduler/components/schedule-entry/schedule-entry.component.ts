@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PlayerAdded, SchedulerSettingsUpdated } from '../../actions/scheduler.actions';
 import { SchedulerState } from '../../reducers';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-schedule-entry',
@@ -14,7 +15,7 @@ export class ScheduleEntryComponent implements OnInit {
   seCourts = 0;
   sePlayersPerCourt = 0;
 
-  constructor(private store: Store<SchedulerState>) { }
+  constructor(private store: Store<SchedulerState>, private router: Router) { }
 
   ngOnInit() {
   }
@@ -24,5 +25,6 @@ export class ScheduleEntryComponent implements OnInit {
       this.store.dispatch(new PlayerAdded(index, true, true, 0));
     }
     this.store.dispatch(new SchedulerSettingsUpdated(1, this.sePlayers, this.seCourts, this.sePlayersPerCourt));
+    this.router.navigate(['/schedule-generator']);
   }
 }
