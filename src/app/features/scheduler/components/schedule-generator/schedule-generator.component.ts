@@ -13,7 +13,7 @@ export class ScheduleGeneratorComponent implements OnInit {
 
 
   @Input() myPlayers: Player[];
-  @Input() schedulerSettings: SchedulerSettings[];
+  @Input() schedulerSettings: SchedulerSettings;
 
   nbrOfByePlayers: number;
 
@@ -27,8 +27,8 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   initialize() {
-    this.nbrOfByePlayers = this.schedulerSettings[0].nbrOfPlayers -
-                  (this.schedulerSettings[0].nbrOfCourts * this.schedulerSettings[0].nbrOfPlayersPerCourt);
+    this.nbrOfByePlayers = this.schedulerSettings.nbrOfPlayers -
+                  (this.schedulerSettings.nbrOfCourts * this.schedulerSettings.nbrOfPlayersPerCourt);
     // this.mySchedulerSettings = this.schedulerSettings[0];
     // this.nbrOfPlayers = this.mySchedulerSettings.nbrOfPlayers;
     // this.nbrOfCourts = this.mySchedulerSettings.nbrOfCourts;
@@ -72,7 +72,7 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   schedulePLayers() {
-    this.initialize();
+    // this.initialize();
     // this.determineByePlayers();
     console.log('Number of bye players = ', this.nbrOfByePlayers);
     console.log('Bye Round = ', this.byeRound);

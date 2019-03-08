@@ -16,14 +16,6 @@ const routes: Routes = [
     component: SchedulerComponent
   },
   {
-    path: 'schedule-entry',
-    component: ScheduleEntryComponent
-  },
-  {
-    path: 'schedule-generator',
-    component: ScheduleGeneratorComponent
-  },
-  {
     path: 'help',
     component: HelpComponent
   },
