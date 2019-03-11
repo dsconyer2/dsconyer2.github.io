@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Player, SchedulerSettings, RowObject, ColumnObject, Level1RoundDataObject } from '../../models';
+import { ColumnObject, Level1RoundDataObject, Player, RowObject, SchedulerSettings } from '../../models';
 import { SchedulerState } from '../../reducers';
 
 
@@ -22,11 +22,12 @@ export class ScheduleGeneratorComponent implements OnInit {
 
   byeList: Player[] = [];
   byeRound = 0;
+  byeReset = 0;
   round = 0;
-  level1Array: RowObject[];
-  unavailableIndexes: number[];
+  level1Array: RowObject[] = [];
+  unavailableIndexes: number[] = [];
   numberOfPairings: number;
-  level1RoundData: Level1RoundDataObject[];
+  level1RoundData: Level1RoundDataObject[] = [];
 
   constructor(private store: Store<SchedulerState>) { }
 
@@ -40,8 +41,17 @@ export class ScheduleGeneratorComponent implements OnInit {
     this.nbrOfPlayers = this.schedulerSettings.nbrOfPlayers;
     this.nbrOfCourts = this.schedulerSettings.nbrOfCourts;
     this.playersPerCourt = this.schedulerSettings.nbrOfPlayersPerCourt;
+    this.numberOfPairings = (this.nbrOfPlayers - this.nbrOfByePlayers) / 2;
+    this.byeReset = Math.trunc(this.schedulerSettings.nbrOfPlayers / this.nbrOfByePlayers) + 1;
+    this.myPlayers.forEach(aPlayer => this.unavailableIndexes.push(aPlayer.playerId));
+    this.createLevel1Array();
   }
 
+  resetByeAvailable() {
+    this.myPlayers.forEach(aPlayer => {
+      if (!this.byeList.includes(aPlayer)) {aPlayer.isByeAvailable = true; }
+    });
+  }
   determineByePlayers() {
     // regular bye selection
     this.byeRound++;
@@ -51,12 +61,9 @@ export class ScheduleGeneratorComponent implements OnInit {
 
     // need more players to pick from to fill the byeList
     if (this.byeListNotFull()) {
-      const byeIndex: number = this.byeRound - 2;
-      this.byeRound = 1;
+      this.resetByeAvailable();
       while (this.byeListNotFull()) {
-        for (let i = 1; i < byeIndex; i++) {
-          this.pickByePlayers(this.playersAvailableForBye().filter(aPlayer => aPlayer.byeRound === i));
-        }
+        this.pickByePlayers(this.playersAvailableForBye());
       }
     }
   }
@@ -66,12 +73,14 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   playersAvailableForBye() {
-    return this.myPlayers.filter( aPlayer => aPlayer.isByeAvailable);
+    const byeHighIndex: number = Math.max(Math.trunc(this.byeRound - (this.byeReset / 2)), 0);
+    return this.myPlayers.filter( aPlayer => aPlayer.isByeAvailable).filter(aPlayer => aPlayer.byeRound <= byeHighIndex);
   }
 
   pickByePlayers(availableByePlayers: Player[]) {
     const pickId: number = Math.trunc(availableByePlayers.length * Math.random());
-    console.log('Pick id =', pickId);
+    // console.log('Pick id =', pickId);
+    // console.log('Available = ', availableByePlayers);
     const byePlayerPicked = availableByePlayers[pickId];
     byePlayerPicked.isByeAvailable = false;
     byePlayerPicked.byeRound = this.byeRound;
@@ -80,19 +89,19 @@ export class ScheduleGeneratorComponent implements OnInit {
 
   createLevel1Array() {
     for (let rowIndex = 0; rowIndex < this.nbrOfPlayers; rowIndex++) {
-      let row:RowObject = {
+      const row: RowObject = {
         id: rowIndex,
         isAvailable: true,
         columns: []
-      }
+      };
       for (let colIndex = rowIndex + 1; colIndex < this.nbrOfPlayers; colIndex++) {
-        let col:ColumnObject = {
+        const col: ColumnObject = {
           id: colIndex,
           isAvailable: true,
           isPicked: false,
           round: 0,
           playerIds: []
-        }
+        };
         col.playerIds.push(rowIndex);
         col.playerIds.push(colIndex);
         row.columns.push(col);
@@ -102,66 +111,96 @@ export class ScheduleGeneratorComponent implements OnInit {
   }
 
   initializeUnavailableIndexes() {
-    //load all bye players into the unavailable list
-    this.byeList.forEach(byePlayer => 
-    this.unavailableIndexes.push(this.myPlayers.findIndex(p => p.playerId === byePlayer.playerId)))
+    // load all bye players into the unavailable list
+    this.byeList.forEach(byePlayer =>
+    this.unavailableIndexes.push(this.myPlayers.findIndex(p => p.playerId === byePlayer.playerId)));
   }
 
-  setRowsAndColumnsUnavailable(array:RowObject[], unavailableIndexes: number[]) {
-    array.forEach((row) => {
-      if(unavailableIndexes.find(ui => ui === row.id)) {row.isAvailable = false;}
-      row.columns.forEach((col) => {
-        if(unavailableIndexes.find(ui => ui === col.id)) {
-          col.isAvailable = false;
-          col.isPicked = true;
+  setRowsAndColumnsAvailability(array: RowObject[], unavailableIndexes: number[], availability: boolean) {
+    unavailableIndexes.forEach(uId => {
+      array.forEach((row) => {
+        if (uId === row.id) {row.isAvailable = availability; }
+        row.columns.forEach((col) => {
+          if (uId === col.id) {
+            col.isAvailable = availability;
+          }
+        });
+      });
+    });
+  }
+
+  isIdAvailable(id: number) {
+    const isAvailable = this.unavailableIndexes.find(ui => ui === id);
+    return isAvailable === undefined;
+  }
+
+  addUnavailableIndexes(ids: number[]) {
+    ids.forEach(id => {
+      if (this.isIdAvailable(id)) {
+        this.unavailableIndexes.push(id);
+      }
+    });
+  }
+
+  processRound() {
+    this.determineByePlayers();
+    console.log('Bye Round = ', this.byeRound);
+    let val = '';
+    this.byeList.forEach(aPlayer => val += (aPlayer.playerId + ', '));
+    console.log(val);
+    this.initializeUnavailableIndexes();
+    this.setRowsAndColumnsAvailability(this.level1Array, this.unavailableIndexes, false);
+
+    for (let index = 0; index < this.numberOfPairings; index++) {
+      const pairingArray: RowObject[] = this.level1Array.filter(row => row.isAvailable);
+      let rowProcessingIsNotComplete = true;
+      pairingArray.forEach(row => {
+        if (rowProcessingIsNotComplete) {
+          // for (let colIndex = 0; colIndex < row.columns.length; colIndex++) {
+          for (const col of row.columns) {
+            // const col = row.columns[colIndex];
+            if (col.isPicked || !col.isAvailable || !this.isIdAvailable(col.id)) {
+              continue;
+            } else {
+              const roundData: Level1RoundDataObject = {
+                round: this.round,
+                id: index,
+                playerIds: col.playerIds
+              };
+              this.level1RoundData.push(roundData);
+              col.isPicked = true;
+              this.addUnavailableIndexes(col.playerIds);
+              this.setRowsAndColumnsAvailability(this.level1Array, col.playerIds, false);
+              rowProcessingIsNotComplete = false;
+              break;
+            }
+          }
         }
-      })
-    })
+      });
+      // console.log('PairingArray, index = ', index);
+      // console.table(pairingArray);
+    }
+
+    // console.log('Round data');
+    // console.table(this.level1RoundData);
+    // console.log('Player data');
+    // console.table(this.myPlayers);
+    // console.log('Unavailable Indexes');
+    // console.table(this.unavailableIndexes);
+    // console.log('Level1Array');
+    // console.table(this.level1Array);
   }
 
   schedulePLayers() {
     this.initialize();
-    this.determineByePlayers();
-    console.log('Number of bye players = ', this.nbrOfByePlayers);
-    console.log('Bye Round = ', this.byeRound);
-    console.table(this.byeList);
-    this.createLevel1Array();
-    // this.initializeUnavailableIndexes();
-    // this.setRowsAndColumnsUnavailable(this.level1Array, this.unavailableIndexes);
-    this.numberOfPairings = (this.nbrOfPlayers - this.nbrOfByePlayers) / 2;
-
-    // for (let index = 0; index < this.numberOfPairings; index++) {
-    //   let pairingArray: RowObject[] = this.level1Array.filter(row => row.isAvailable);
-    //   pairingArray.forEach(row => {
-    //     for (let colIndex = 0; colIndex < row.columns.length; colIndex++) {
-    //       const col = row.columns[colIndex];
-    //       if(col.isPicked || !col.isAvailable || this.unavailableIndexes.find(ui => ui === col.id)) {
-    //         continue;
-    //       } else {
-    //         let roundData: Level1RoundDataObject = {
-    //           round: this.round,
-    //           id: index,
-    //           playerIds: col.playerIds
-    //         }
-    //         this.level1RoundData.push(roundData);
-    //         col.isAvailable = false;
-    //         col.isPicked = true;
-    //         row.isAvailable = false;
-    //         col.playerIds.forEach(playerId => {
-    //           if(!this.unavailableIndexes.find(ui => ui === playerId)){
-    //             this.unavailableIndexes.push(playerId);
-    //           }
-    //         })
-    //       }
-          
-    //     }
-
-    //   })
-    // }
-
-    console.log('Round data');
-    console.table(this.level1RoundData);
-    console.log("Player data");
-    console.table(this.myPlayers);
+    for (let nbrOfRounds = 0; nbrOfRounds < this.nbrOfPlayers - 1; nbrOfRounds++) {
+      this.round++;
+      this.setRowsAndColumnsAvailability(this.level1Array, this.unavailableIndexes, true);
+      this.unavailableIndexes.length = 0;
+      this.byeList.length = 0;
+      this.processRound();
+    }
+    console.log('Level1Array');
+    console.table(this.level1Array);
   }
 }
