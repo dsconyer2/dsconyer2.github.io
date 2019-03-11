@@ -10,11 +10,16 @@ export interface PlayerEntity {
 
 export interface State extends EntityState<PlayerEntity> { }
 
+// const initialState: State = {
+//   ids: ['1', '2'],
+//   entities: {
+//     1: { id: 1, playerId: 1, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 },
+//     2: { id: 2, playerId: 2, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 }
+//   }
+// };
 const initialState: State = {
-  ids: ['1', '2'],
+  ids: [],
   entities: {
-    1: { id: 1, playerId: 1, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 },
-    2: { id: 2, playerId: 2, isPlayerAvailable: true, isByeAvailable: true, byeRound: 0 }
   }
 };
 
