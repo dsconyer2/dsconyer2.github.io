@@ -10,6 +10,7 @@ import { SchedulerState } from '../../reducers';
 })
 export class ScheduleEntryComponent implements OnInit {
 
+  seType;
   sePlayers = 0;
   seCourts = 0;
   sePlayersPerCourt = 0;

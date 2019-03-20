@@ -1,11 +1,19 @@
 
 <form #form="ngForm">
-<div>
+  <div>
+    <label for="">Schedule Type</label>
+    <select name="scheduleType" id="scheduleType" #scheduleType="ngModel" ngModel [(ngModel)]="seType" autofocus>
+      <option value="" disabled>Choose a type</option>
+      <option value="King">King of the Court</option>
+      <option value="Tournament">Tournament</option>
+    </select>
+  </div>
+<div *ngIf="seType !== ''">
   <Label>
     Number of Players
   </Label>
   <input class="form-control" type="number" name="nbrOfPlayersInput"
-  ngModel [(ngModel)]="sePlayers" #nbrOfPlayersInput="ngModel" autofocus>
+  ngModel [(ngModel)]="sePlayers" #nbrOfPlayersInput="ngModel">
   <br>
   <Label>
     Number of Courts

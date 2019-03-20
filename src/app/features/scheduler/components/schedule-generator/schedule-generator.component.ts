@@ -156,6 +156,19 @@ export class ScheduleGeneratorComponent implements OnInit {
     });
   }
 
+  setAvailableWeighting(pairingArray: RowObject[], availableColumns: {id: number, weight: number, col: ColumnObject}[]) {
+    availableColumns.forEach( availableCol => {
+      pairingArray.find(row => row.id == availableCol.id).columns.forEach(col => {
+        if (col.isAvailable && (!col.isPicked)) availableCol.weight++;
+      })
+      pairingArray.filter(row => row.id !== availableCol.id).forEach(row => {
+        row.columns.forEach(col => {
+          if (col.id === availableCol.id && col.isAvailable && (!col.isPicked)) availableCol.weight++;
+        })
+      })
+    })
+  }
+
   processRound() {
     this.determineByePlayers();
     console.log('Bye Round = ', this.byeRound);
@@ -168,8 +181,8 @@ export class ScheduleGeneratorComponent implements OnInit {
     for (let index = 0; index < this.numberOfPairings; index++) {
       const pairingArray: RowObject[] = this.level1Array.filter(row => row.isAvailable);
       pairingArray.sort((a,b) => {
-        let aNotPickedCount = (a.columns.reduce((acc,cur) => {if (!cur.isPicked && cur.isAvailable){acc++}; return acc;}, 0));
-        let bNotPickedCount = (b.columns.reduce((acc,cur) => {if (!cur.isPicked && cur.isAvailable){acc++}; return acc;}, 0));
+        let aNotPickedCount = (a.columns.reduce((acc,cur) => {if ((!cur.isPicked) && cur.isAvailable){acc++}; return acc;}, 0));
+        let bNotPickedCount = (b.columns.reduce((acc,cur) => {if ((!cur.isPicked) && cur.isAvailable){acc++}; return acc;}, 0));
         let result;
         if (aNotPickedCount >= 
             bNotPickedCount) {
@@ -177,54 +190,62 @@ export class ScheduleGeneratorComponent implements OnInit {
             } else {
               result = -1;
             };
-        // console.log('aNotpickedCount = ', aNotPickedCount);
-        // console.log('bNotpickedCount = ', bNotPickedCount);
-        // console.log('Result = ', result);
         return result;
       });
-      console.log('PairingArray after sort ');
-      console.table(pairingArray);
+      // console.log('PairingArray after sort ');
+      // console.table(pairingArray);
       let rowProcessingIsNotComplete = true;
-      pairingArray.forEach(row => {
+      for (let rIndex = 0; rIndex < pairingArray.length; rIndex++){
+        let row = pairingArray[rIndex];
         if (rowProcessingIsNotComplete) {
-          // for (let colIndex = 0; colIndex < row.columns.length; colIndex++) {
-          for (const col of row.columns) {
-            // const col = row.columns[colIndex];
-            if (col.isPicked || !col.isAvailable || !this.isIdAvailable(col.id)) {
+          let availableColumns: {id: number, weight: number, col: ColumnObject}[] = [];
+          for (let colIndex = 0; colIndex < row.columns.length; colIndex++) {
+          // for (const aCol of row.columns) {
+            const aCol = row.columns[colIndex];
+            if (aCol.isPicked || !aCol.isAvailable || !this.isIdAvailable(aCol.id)) {
               continue;
             } else {
-              const roundData: Level1RoundDataObject = {
-                round: this.round,
-                id: index,
-                playerIds: col.playerIds
-              };
-              this.level1RoundData.push(roundData);
-              col.isPicked = true;
-              this.addUnavailableIndexes(col.playerIds);
-              this.setRowsAndColumnsAvailability(this.level1Array, col.playerIds, false);
-              rowProcessingIsNotComplete = false;
-              break;
+              availableColumns.push({id: aCol.id, weight: 0, col: aCol });
             }
           }
+          this.setAvailableWeighting(pairingArray, availableColumns);
+          let pickedColumn = availableColumns.sort((a,b) => {if (a.weight >= b.weight) {return 1} else {return -1}}).find(a => true);
+          if (pickedColumn) {
+            const roundData: Level1RoundDataObject = {
+              round: this.round,
+              id: index,
+              playerIds: pickedColumn.col.playerIds
+            };
+            this.level1RoundData.push(roundData);
+            pickedColumn.col.isPicked = true;
+            this.addUnavailableIndexes(pickedColumn.col.playerIds);
+            this.setRowsAndColumnsAvailability(this.level1Array, pickedColumn.col.playerIds, false);
+            rowProcessingIsNotComplete = false;
+            console.log("Avaiable Columns");
+            console.table(availableColumns);
+            console.log("Picked Column", pickedColumn.id)
+          }
         }
-      });
+      };
       console.log('PairingArray after picking, index = ', index);
-      console.table(pairingArray);
+      console.log(pairingArray);
     }
 
-    console.log('Round data');
-    console.table(this.level1RoundData);
+    
+   
     // console.log('Player data');
     // console.table(this.myPlayers);
     // console.log('Unavailable Indexes');
     // console.table(this.unavailableIndexes);
-    console.log('Level1Array');
-    console.table(this.level1Array);
+    // console.log('Level1Array');
+    // console.table(this.level1Array);
   }
 
   runAnalysisReport() {
     console.log('Level1Array');
     console.table(this.level1Array);
+    console.log('Round data');
+    console.table(this.level1RoundData);
     console.log('Bye Log');
     console.table(this.byeLog);
     let byeAnalysis = [];
@@ -243,6 +264,12 @@ export class ScheduleGeneratorComponent implements OnInit {
     })
     console.log('Bye analysis');
     console.table(byeAnalysis);
+
+    let fullPairings = 0;
+    this.level1RoundData.forEach(row => {
+      if (row.id === (this.numberOfPairings - 1)) fullPairings++;
+    })
+    console.log("Full Pairings = ", fullPairings);
   }
 
   schedulePLayers() {
@@ -257,7 +284,7 @@ export class ScheduleGeneratorComponent implements OnInit {
       this.processRound();
     }
 
-    // this.runAnalysisReport();
+    this.runAnalysisReport();
     
   }
 }
