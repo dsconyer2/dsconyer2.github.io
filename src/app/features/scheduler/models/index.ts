@@ -3,12 +3,25 @@ export interface Player {
     isPlayerAvailable: boolean;
     isByeAvailable: boolean;
     byeRound: number;
+    playedAgainst: {id: number, count: number}[];
 }
 
 export interface SchedulerSettings {
   nbrOfPlayers: number;
   nbrOfCourts: number;
   nbrOfPlayersPerCourt: number;
+}
+
+export interface Match {
+  matchId: number;
+  team1: Player[];
+  team2: Player[];
+}
+
+export interface RoundData {
+  roundId: number, 
+  matches: Match[],
+  byes: Player[];
 }
 
 export interface RowObject {

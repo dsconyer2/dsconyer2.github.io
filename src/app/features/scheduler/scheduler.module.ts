@@ -9,9 +9,10 @@ import { ScheduleGeneratorComponent } from './components/schedule-generator/sche
 import { SchedulerEffects } from './effects/scheduler.effects';
 import { reducers } from './reducers';
 import { SchedulerComponent } from './scheduler.component';
+import { ScheduleTournamentComponent } from './components/schedule-tournament/schedule-tournament.component';
 
 @NgModule({
-  declarations: [SchedulerComponent, ScheduleEntryComponent, ScheduleGeneratorComponent],
+  declarations: [SchedulerComponent, ScheduleEntryComponent, ScheduleGeneratorComponent, ScheduleTournamentComponent],
   imports: [
     CommonModule,
     HttpClientModule,

@@ -34,7 +34,7 @@ export class ScheduleGeneratorComponent implements OnInit {
   constructor(private store: Store<SchedulerState>) { }
 
   ngOnInit() {
-    this.schedulePLayers();
+    // this.schedulePLayers();
   }
 
   initialize() {
