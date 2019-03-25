@@ -7,12 +7,14 @@ export const ADD_PLAYER = '[schedulerFeature] add  player';
 export class PlayerAdded implements Action {
   readonly type = ADD_PLAYER;
   payload: PlayerEntity;
-  constructor(playerId: number, isPlayerAvailable: boolean, isByeAvailable: boolean, byeRound: number) {
+  constructor(playerId: number, isPlayerAvailable: boolean, isByeAvailable: boolean,
+              byeRound: number, playedAgainst: {}) {
     this.payload = {
       playerId,
     isPlayerAvailable,
     isByeAvailable,
     byeRound,
+    playedAgainst,
     id: myId++
     };
    }
@@ -26,8 +28,8 @@ export class NbrOfPlayersUpdated implements Action {
   constructor(nbrOfPlayers: number) {
     this.payload = {
       nbrOfPlayers,
-      nbrOfCourts:0,
-      nbrOfPlayersPerCourt:0
+      nbrOfCourts: 0,
+      nbrOfPlayersPerCourt: 0
     };
    }
 }
@@ -38,9 +40,9 @@ export class NbrOfCourtsUpdated implements Action {
   payload: SchedulerSettings;
   constructor(nbrOfCourts: number) {
     this.payload = {
-      nbrOfPlayers:0,
+      nbrOfPlayers: 0,
       nbrOfCourts,
-      nbrOfPlayersPerCourt:0
+      nbrOfPlayersPerCourt: 0
     };
    }
 }
@@ -51,8 +53,8 @@ export class NbrOfPlayersPerCourtUpdated implements Action {
   payload: SchedulerSettings;
   constructor(nbrOfPlayersPerCourt: number) {
     this.payload = {
-      nbrOfPlayers:0,
-      nbrOfCourts:0,
+      nbrOfPlayers: 0,
+      nbrOfCourts: 0,
       nbrOfPlayersPerCourt
     };
    }

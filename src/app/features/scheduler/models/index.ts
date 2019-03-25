@@ -3,7 +3,7 @@ export interface Player {
     isPlayerAvailable: boolean;
     isByeAvailable: boolean;
     byeRound: number;
-    playedAgainst: {id: number, count: number}[];
+    playedAgainst: {};
 }
 
 export interface SchedulerSettings {
@@ -12,15 +12,23 @@ export interface SchedulerSettings {
   nbrOfPlayersPerCourt: number;
 }
 
+export interface MatchPriorityEntry {
+  matchId: number;
+  matchCount: number;
+}
+
 export interface Match {
   matchId: number;
   team1: Player[];
   team2: Player[];
+  matchPriority: {};
+  opponentsAssigned: boolean;
+  primary: boolean;
 }
 
 export interface RoundData {
-  roundId: number, 
-  matches: Match[],
+  roundId: number;
+  matches: Match[];
   byes: Player[];
 }
 
