@@ -8,18 +8,32 @@ export class PlayerAdded implements Action {
   readonly type = ADD_PLAYER;
   payload: PlayerEntity;
   constructor(playerId: number, isPlayerAvailable: boolean, isByeAvailable: boolean,
-              byeRound: number, playedAgainst: {}) {
+              byeRound: number, playedAgainst: {}, courtsPlayed: {}) {
     this.payload = {
       playerId,
     isPlayerAvailable,
     isByeAvailable,
     byeRound,
     playedAgainst,
+    courtsPlayed,
     id: myId++
     };
    }
 }
 
+export const UPDATE_SCHEDULER_TYPE = '[schedulerFeature] update  schedulerType';
+export class SchedulerTypeUpdated implements Action {
+  readonly type =  UPDATE_SCHEDULER_TYPE;
+  payload: SchedulerSettings;
+  constructor(schedulerType: string) {
+    this.payload = {
+      schedulerType,
+      nbrOfPlayers: 0,
+      nbrOfCourts: 0,
+      nbrOfPlayersPerCourt: 0
+    };
+   }
+}
 
 export const UPDATE_NBR_OF_PLAYERS = '[schedulerFeature] update  nbrOfPlayers';
 export class NbrOfPlayersUpdated implements Action {
@@ -27,6 +41,7 @@ export class NbrOfPlayersUpdated implements Action {
   payload: SchedulerSettings;
   constructor(nbrOfPlayers: number) {
     this.payload = {
+      schedulerType: '',
       nbrOfPlayers,
       nbrOfCourts: 0,
       nbrOfPlayersPerCourt: 0
@@ -40,6 +55,7 @@ export class NbrOfCourtsUpdated implements Action {
   payload: SchedulerSettings;
   constructor(nbrOfCourts: number) {
     this.payload = {
+      schedulerType: '',
       nbrOfPlayers: 0,
       nbrOfCourts,
       nbrOfPlayersPerCourt: 0
@@ -53,6 +69,7 @@ export class NbrOfPlayersPerCourtUpdated implements Action {
   payload: SchedulerSettings;
   constructor(nbrOfPlayersPerCourt: number) {
     this.payload = {
+      schedulerType: '',
       nbrOfPlayers: 0,
       nbrOfCourts: 0,
       nbrOfPlayersPerCourt
@@ -62,4 +79,4 @@ export class NbrOfPlayersPerCourtUpdated implements Action {
 
 
 // Discriminated Union Type  http://www.typescriptlang.org/docs/handbook/advanced-types.html
-export type All = PlayerAdded | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated;
+export type All = PlayerAdded | SchedulerTypeUpdated | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated;

@@ -4,9 +4,11 @@ export interface Player {
     isByeAvailable: boolean;
     byeRound: number;
     playedAgainst: {};
+    courtsPlayed: {};
 }
 
 export interface SchedulerSettings {
+  schedulerType: string;
   nbrOfPlayers: number;
   nbrOfCourts: number;
   nbrOfPlayersPerCourt: number;
@@ -19,17 +21,21 @@ export interface MatchPriorityEntry {
 
 export interface Match {
   matchId: number;
+  matchLabel: string;
   team1: Player[];
   team2: Player[];
   matchPriority: {};
+  courtPriority: {};
+  courtAssigned: number;
   opponentsAssigned: boolean;
-  primary: boolean;
+  isPrimary: boolean;
 }
 
 export interface RoundData {
   roundId: number;
   matches: Match[];
   byes: Player[];
+  byeLabel: string;
 }
 
 export interface RowObject {

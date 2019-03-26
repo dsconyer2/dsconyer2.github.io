@@ -7,6 +7,7 @@ export interface PlayerEntity {
   isByeAvailable: boolean;
   byeRound: number;
   playedAgainst: {};
+  courtsPlayed: {};
 }
 
 export interface State extends EntityState<PlayerEntity> { }

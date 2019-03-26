@@ -1,0 +1,23 @@
+#nbrOfCourtsInput {
+  margin-left: 4pt;
+  }
+  #startBtn {
+  background-color: rgb(255, 196, 3);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border-color: ivory;
+  }
+
+
+    .form-control{
+    padding: 0.375rem 0.75rem;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    }
+    h1{
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    }
