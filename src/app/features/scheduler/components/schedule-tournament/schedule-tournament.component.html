@@ -1,21 +1,13 @@
-
 <form #form="ngForm">
-  <div>
-    <label>Nbr of players = {{nbrOfPlayers}}</label> <br>
-    <label>Nbr of courts = {{nbrOfCourts}}</label> <br>
-    <label>Nbr of players per court = {{playersPerCourt}}</label> <br>
-    <label>Nbr of bye players = {{nbrOfByePlayers}}</label> <br>
-  </div>
-  <div>
-    <table *ngIf='isScheduleTypeKing'>
-      <th *ngFor='let header of courtHeaders'>{{header}}</th>
-      <tr *ngFor='let round of rounds'>
-        <td>{{round.roundId}}</td>
-        <td *ngFor='let match of round.matches'>{{match.matchLabel}}</td>
-        <td>{{round.byeLabel}}</td>
-      </tr>
-    </table>
-    <table *ngIf='!isScheduleTypeKing'>
+  <div class="col-lg-12">
+    <div>
+      <label>Nbr of players = {{nbrOfPlayers}}</label> <br>
+      <label>Nbr of courts = {{nbrOfCourts}}</label> <br>
+      <label>Nbr of players per court = {{playersPerCourt}}</label> <br>
+      <label>Nbr of bye players = {{nbrOfByePlayers}}</label> <br>
+    </div>
+    <div>
+      <table *ngIf='isScheduleTypeKing'>
         <th *ngFor='let header of courtHeaders'>{{header}}</th>
         <tr *ngFor='let round of rounds'>
           <td>{{round.roundId}}</td>
@@ -23,5 +15,14 @@
           <td>{{round.byeLabel}}</td>
         </tr>
       </table>
+      <table *ngIf='!isScheduleTypeKing'>
+        <th *ngFor='let header of courtHeaders'>{{header}}</th>
+        <tr *ngFor='let round of rounds'>
+          <td>{{round.roundId}}</td>
+          <td *ngFor='let match of round.matches'>{{match.matchLabel}}</td>
+          <td>{{round.byeLabel}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </form>

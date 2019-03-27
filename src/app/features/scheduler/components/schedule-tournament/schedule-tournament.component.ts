@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { Match, Player, RoundData, SchedulerSettings } from '../../models';
-import { SchedulerState } from '../../reducers';
+import { SchedulerState, selectPlayerEntities, selectSchedulerSettings } from '../../reducers';
 
 
 @Component({
@@ -11,8 +12,8 @@ import { SchedulerState } from '../../reducers';
 })
 export class ScheduleTournamentComponent implements OnInit {
 
-  @Input() myPlayers: Player[];
-  @Input() schedulerSettings: SchedulerSettings;
+  players$: Observable<Player[]>;
+  schedulerSettings$: Observable<SchedulerSettings>;
 
   nbrOfPlayers: number;
   nbrOfCourts: number;
@@ -30,6 +31,15 @@ export class ScheduleTournamentComponent implements OnInit {
   constructor(private store: Store<SchedulerState>) { }
 
   ngOnInit() {
+    this.store.select(selectPlayerEntities).subscribe((players: Player[]) => {
+      players.forEach(aPlayer => this.playerList1.push(aPlayer));
+    });
+    this.store.select(selectSchedulerSettings).subscribe((settings: SchedulerSettings) => {
+      this.isScheduleTypeKing = settings.schedulerType === 'King';
+      this.nbrOfPlayers = settings.nbrOfPlayers;
+      this.nbrOfCourts = settings.nbrOfCourts;
+      this.playersPerCourt = settings.nbrOfPlayersPerCourt;
+    });
     this.schedulePLayers();
   }
 
@@ -44,12 +54,7 @@ export class ScheduleTournamentComponent implements OnInit {
    }
 
   initialize() {
-    this.isScheduleTypeKing = this.schedulerSettings.schedulerType === 'King';
-    this.nbrOfPlayers = this.schedulerSettings.nbrOfPlayers;
-    this.nbrOfCourts = this.schedulerSettings.nbrOfCourts;
-    this.playersPerCourt = this.schedulerSettings.nbrOfPlayersPerCourt;
 
-    this.myPlayers.forEach(aPlayer => this.playerList1.push(aPlayer));
     // console.log('My Players = ', this.myPlayers);
     // console.table(this.myPlayers);
     // console.log('Player List 1 = ', this.playerList1);
@@ -409,7 +414,7 @@ export class ScheduleTournamentComponent implements OnInit {
       });
       console.log(byeString);
     });
-    console.log('My Players = ', this.myPlayers);
+    console.log('My Players = ', this.players$);
 
   }
 

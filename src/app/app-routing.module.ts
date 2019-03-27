@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { ScheduleEntryComponent } from './features/scheduler/components/schedule-entry/schedule-entry.component';
-import { ScheduleGeneratorComponent } from './features/scheduler/components/schedule-generator/schedule-generator.component';
-import { SchedulerComponent } from './features/scheduler/scheduler.component';
+import { ScheduleTournamentComponent } from './features/scheduler/components/schedule-tournament/schedule-tournament.component';
 
 const routes: Routes = [
   {
@@ -13,7 +12,11 @@ const routes: Routes = [
   },
   {
     path: 'scheduler',
-    component: SchedulerComponent
+    component: ScheduleEntryComponent
+  },
+  {
+    path: 'scheduleTournament',
+    component: ScheduleTournamentComponent
   },
   {
     path: 'help',

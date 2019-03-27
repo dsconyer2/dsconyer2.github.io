@@ -1,32 +1,30 @@
-
 <form #form="ngForm">
-  <div>
-    <label for="">Schedule Type</label>
-    <select name="scheduleType" id="scheduleType" #scheduleType="ngModel" ngModel [(ngModel)]="seType" autofocus>
-      <option value="" disabled>Choose a type</option>
-      <option value="King">King of the Court</option>
-      <option value="Tournament">Tournament</option>
-    </select>
+  <div class="col-lg-4 offset-lg-1">
+    <label name="scheduleType" id="scheduleType">Schedule Type</label>
+    <div class="bs-component" style="margin-bottom: 15px;">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary" [class.active]="'King' === seType">
+          <input type="radio" name="options" id="King of the Court" value="King" autocomplete="off"
+            [checked]="'King' === seType" (click)="onClickScheduleType('King')"> King of the Court
+        </label>
+        <label class="btn btn-primary" [class.active]="'Tournament' === seType">
+          <input type="radio" name="options" id="Tournament" value="Tournament" autocomplete="off"
+            [checked]="'Tournament' === seType" (click)="onClickScheduleType('Tournament')"> Tournament
+        </label>
+      </div>
+    </div>
+    <h5>Number of Players</h5>
+    <input type="number" class="form-control" name="nbrOfPlayersInput" ngModel [(ngModel)]="sePlayers"
+      #nbrOfPlayersInput="ngModel" autofocus>
+    <br>
+    <h5>Number of Courts</h5>
+    <input class="form-control" type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput" ngModel
+      [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
+    <br>
+    <h5>Number of Players per Court</h5>
+    <input class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput" ngModel
+      [(ngModel)]="sePlayersPerCourt" #nbrOfPlayersPerCourtInput="ngModel">
+    <br>
+    <button type="submit" class="btn btn-primary" (click)="submit()">Start</button>
   </div>
-<div *ngIf="seType !== ''">
-  <Label>
-    Number of Players
-  </Label>
-  <input class="form-control" type="number" name="nbrOfPlayersInput"
-  ngModel [(ngModel)]="sePlayers" #nbrOfPlayersInput="ngModel">
-  <br>
-  <Label>
-    Number of Courts
-  </Label>
-  <input class="form-control" type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput"
-  ngModel [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
-  <br>
-  <Label>
-    Number of Players per Court
-  </Label>
-  <input class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput"
-  ngModel [(ngModel)]="sePlayersPerCourt" #nbrOfPlayersPerCourtInput="ngModel">
-  <br>
-  <button type="button" (click)="submit()">Start</button>
-</div>
 </form>

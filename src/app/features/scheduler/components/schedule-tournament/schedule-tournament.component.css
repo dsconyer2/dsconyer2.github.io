@@ -1,7 +1,15 @@
 
-tr:nth-child(even) {background-color: #f2f2f2;}
+/* tr:nth-child(even) {background-color: #f2f2f2;} */
+tr:nth-child(even) {
+  color: rgb(48, 51, 224);
+  background-color: #adb5bd;
+}
 table{
 border: thick solid black;
 width: 100%;
 text-align: center;
+font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.5;
 }
+

@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Player, SchedulerSettings } from '../models';
+import { Player } from '../models';
 import * as fromPlayerManager from './player.reducer';
 import * as fromSchedulerManager from './scheduler.reducer';
 
@@ -27,6 +27,7 @@ const { selectAll: selectPlayerEntityArray } = fromPlayerManager.adapter.getSele
 
 // TodoEntity[] => TodoListItem[]
 export const selectPlayerEntities = createSelector(selectPlayerEntityArray, t => t.map(x => x as Player));
+export const selectSchedulerType = createSelector(selectSchedulerSettings, s => s.schedulerType);
 export const selectNbrOfPlayers = createSelector(selectSchedulerSettings, s => s.nbrOfPlayers);
 export const selectNbrOfCourts = createSelector(selectSchedulerSettings, s => s.nbrOfCourts);
 export const selectNbrOfPlayersPerCourt = createSelector(selectSchedulerSettings, s => s.nbrOfPlayersPerCourt);
