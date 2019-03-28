@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, SchedulerTypeUpdated } from '../../actions/scheduler.actions';
+import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, PlayerRemoveAll, SchedulerTypeUpdated } from '../../actions/scheduler.actions';
 import { SchedulerState } from '../../reducers';
 
 @Component({
@@ -22,6 +22,11 @@ export class ScheduleEntryComponent implements OnInit {
   }
 
   submit() {
+    if (!(this.seType === 'King')) {
+      this.seCourts = 0;
+      this.sePlayersPerCourt = 2;
+    }
+    this.store.dispatch(new PlayerRemoveAll());
     for (let index = 0; index < this.sePlayers; index++) {
       this.store.dispatch(new PlayerAdded(index, true, true, 0, {}, {}));
     }

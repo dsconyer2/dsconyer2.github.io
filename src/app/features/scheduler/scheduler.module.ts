@@ -5,14 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ScheduleEntryComponent } from './components/schedule-entry/schedule-entry.component';
-import { ScheduleGeneratorComponent } from './components/schedule-generator/schedule-generator.component';
+import { ScheduleTournamentComponent } from './components/schedule-tournament/schedule-tournament.component';
 import { SchedulerEffects } from './effects/scheduler.effects';
 import { reducers } from './reducers';
 import { SchedulerComponent } from './scheduler.component';
-import { ScheduleTournamentComponent } from './components/schedule-tournament/schedule-tournament.component';
 
 @NgModule({
-  declarations: [SchedulerComponent, ScheduleEntryComponent, ScheduleGeneratorComponent, ScheduleTournamentComponent],
+  declarations: [SchedulerComponent, ScheduleEntryComponent, ScheduleTournamentComponent],
   imports: [
     CommonModule,
     HttpClientModule,

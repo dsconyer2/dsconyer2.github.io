@@ -70,10 +70,16 @@ export class ScheduleTournamentComponent implements OnInit {
       }
       this.courtHeaders.push('Byes');
     } else {
+      this.courtHeaders.push('Round');
+      for (let index = 1; index < Math.trunc(this.nbrOfPlayers / this.playersPerCourt) + 1; index++) {
+        const header = 'Match ' + index;
+        this.courtHeaders.push(header);
+      }
       if (this.useEvenPlayerLogic) {
         this.nbrOfByePlayers = 0;
       } else {
         this.nbrOfByePlayers = 1;
+        this.courtHeaders.push('Byes');
       }
     }
   }
@@ -111,7 +117,7 @@ export class ScheduleTournamentComponent implements OnInit {
     //  console.log('Bye indexes');
     //  console.table(byeIndexes);
 
-    for (let rounds = 0; rounds < this.nbrOfPlayers; rounds++) {
+    for (let rounds = 1; rounds < this.nbrOfPlayers + 1; rounds++) {
       // Gather data for the round.
       const thisRound: RoundData = { roundId: rounds, matches: [], byes: [], byeLabel: ''};
       for (let index = 0; index < indexBreak; index++) {

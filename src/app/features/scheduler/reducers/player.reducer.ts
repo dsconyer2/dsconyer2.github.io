@@ -32,6 +32,9 @@ export function reducer(state: State = initialState, action: actions.All): State
     case actions.ADD_PLAYER: {
       return adapter.addOne(action.payload, state);
     }
+    case actions.REMOVE_ALL_PLAYER: {
+      return adapter.removeAll(state);
+    }
     default: {
       return state;
     }

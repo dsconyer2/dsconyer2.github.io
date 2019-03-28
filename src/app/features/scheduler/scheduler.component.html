@@ -6,9 +6,6 @@
     <app-schedule-entry></app-schedule-entry>
   </div>
   <div class="col" *ngIf="(schedulerSettings$ | async).nbrOfPlayers > 0">
-    <app-schedule-generator [myPlayers]="players$ | async"  [schedulerSettings]="schedulerSettings$ | async"></app-schedule-generator>
-  </div>
-  <div class="col" *ngIf="(schedulerSettings$ | async).nbrOfPlayers > 0">
     <app-schedule-tournament></app-schedule-tournament>
   </div>
 </section>

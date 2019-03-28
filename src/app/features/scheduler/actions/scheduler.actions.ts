@@ -21,6 +21,15 @@ export class PlayerAdded implements Action {
    }
 }
 
+export const REMOVE_ALL_PLAYER = '[schedulerFeature] removeAll  player';
+export class PlayerRemoveAll implements Action {
+  readonly type = REMOVE_ALL_PLAYER;
+  // payload: PlayerEntity;
+  constructor() {
+    // this.payload = {};
+   }
+}
+
 export const UPDATE_SCHEDULER_TYPE = '[schedulerFeature] update  schedulerType';
 export class SchedulerTypeUpdated implements Action {
   readonly type =  UPDATE_SCHEDULER_TYPE;
@@ -79,4 +88,4 @@ export class NbrOfPlayersPerCourtUpdated implements Action {
 
 
 // Discriminated Union Type  http://www.typescriptlang.org/docs/handbook/advanced-types.html
-export type All = PlayerAdded | SchedulerTypeUpdated | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated;
+export type All = PlayerAdded | PlayerRemoveAll | SchedulerTypeUpdated | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated;
