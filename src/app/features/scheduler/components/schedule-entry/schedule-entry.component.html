@@ -23,8 +23,11 @@
         [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
       <br>
       <h5>Number of Players per Court</h5>
-      <input class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput" ngModel
+      <select class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput" ngModel
         [(ngModel)]="sePlayersPerCourt" #nbrOfPlayersPerCourtInput="ngModel">
+        <option value="2">2</option>
+        <option value="4">4</option>
+        </select>
       <br>
     </div>
     <button type="submit" class="btn btn-primary" (click)="submit()">Start</button>
