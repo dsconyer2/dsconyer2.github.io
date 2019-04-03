@@ -68,7 +68,7 @@ export class ScheduleTournamentComponent implements OnInit {
         const header = 'Court ' + index;
         this.courtHeaders.push(header);
       }
-      this.courtHeaders.push('Byes');
+      if (this.nbrOfByePlayers > 0) {this.courtHeaders.push('Byes'); }
     } else {
       this.courtHeaders.push('Round');
       for (let index = 1; index < Math.trunc(this.nbrOfPlayers / this.playersPerCourt) + 1; index++) {
@@ -167,8 +167,9 @@ export class ScheduleTournamentComponent implements OnInit {
         this.removeNonPrimaryMatches(thisRound);
         this.scheduleCourts(thisRound);
         this.updateMatchLabels(thisRound);
-        this.updateByeLabels(thisRound);
       }
+
+      this.updateByeLabels(thisRound);
 
       // rotate player lists
       this.playerList1.push(this.playerList2.pop());
