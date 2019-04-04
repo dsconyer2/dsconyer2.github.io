@@ -23,6 +23,6 @@ const { selectAll: selectPlayerContactEntityArray } = fromPlayerContactManager.a
 
 // TodoEntity[] => TodoListItem[]
 export const selectPlayerContactEntities = createSelector(selectPlayerContactEntityArray, t => t.map(x => x as PlayerContact));
-
+export const selectHighestPlayerId = createSelector(selectPlayerContactEntityArray, t => t.reduce((a,c) => {let n = Math.max(a.playerContactId, c.playerContactId); if (n === a.playerContactId){return a} else {return c}}));
 
 

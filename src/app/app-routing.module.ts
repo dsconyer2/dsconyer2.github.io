@@ -4,6 +4,7 @@ import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { ScheduleEntryComponent } from './features/scheduler/components/schedule-entry/schedule-entry.component';
 import { ScheduleTournamentComponent } from './features/scheduler/components/schedule-tournament/schedule-tournament.component';
+import { PlayerContactComponent } from './features/player-contact/player-contact.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'scheduleTournament',
     component: ScheduleTournamentComponent
+  },
+  {
+    path: 'playerContact',
+    component: PlayerContactComponent
   },
   {
     path: 'help',

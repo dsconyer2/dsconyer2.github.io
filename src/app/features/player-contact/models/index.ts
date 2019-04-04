@@ -1,4 +1,4 @@
 export interface PlayerContact {
   playerContactId: number;
-  name: string;
+  name?: string;
 }

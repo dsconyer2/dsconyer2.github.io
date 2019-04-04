@@ -13,6 +13,7 @@ import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { SchedulerModule } from './features/scheduler/scheduler.module';
 import { reducers } from './reducers';
+import { PlayerContactModule } from './features/player-contact/player-contact.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { reducers } from './reducers';
     BrowserAnimationsModule,
     FormsModule,
     SchedulerModule,
+    PlayerContactModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([])
