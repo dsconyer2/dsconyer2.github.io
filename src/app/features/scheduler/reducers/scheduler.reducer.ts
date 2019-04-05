@@ -5,6 +5,7 @@ export interface SchedulerSettings {
   nbrOfPlayers: number;
   nbrOfCourts: number;
   nbrOfPlayersPerCourt: number;
+  randomizeOrder: boolean;
 }
 
 export interface State {
@@ -12,13 +13,15 @@ export interface State {
   nbrOfPlayers: number;
   nbrOfCourts: number;
   nbrOfPlayersPerCourt: number;
+  randomizeOrder: boolean;
 }
 
 const initialState: State = {
   schedulerType: 'King',
   nbrOfPlayers: 0,
   nbrOfCourts: 0,
-  nbrOfPlayersPerCourt: 0
+  nbrOfPlayersPerCourt: 0,
+  randomizeOrder: true
 };
 
 export function reducer(state: State = initialState, action: actions.All): State {
@@ -28,7 +31,8 @@ export function reducer(state: State = initialState, action: actions.All): State
         schedulerType: action.payload.schedulerType,
         nbrOfPlayers: state.nbrOfPlayers,
         nbrOfCourts: state.nbrOfCourts,
-        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt
+        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt,
+        randomizeOrder: state.randomizeOrder
 
       };
       case actions.UPDATE_NBR_OF_PLAYERS:
@@ -36,7 +40,8 @@ export function reducer(state: State = initialState, action: actions.All): State
         schedulerType: state.schedulerType,
         nbrOfPlayers: action.payload.nbrOfPlayers,
         nbrOfCourts: state.nbrOfCourts,
-        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt
+        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt,
+        randomizeOrder: state.randomizeOrder
 
       };
       case actions.UPDATE_NBR_OF_COURTS:
@@ -44,7 +49,8 @@ export function reducer(state: State = initialState, action: actions.All): State
         schedulerType: state.schedulerType,
         nbrOfPlayers: state.nbrOfPlayers,
         nbrOfCourts: action.payload.nbrOfCourts,
-        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt
+        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt,
+        randomizeOrder: state.randomizeOrder
 
       };
       case actions.UPDATE_NBR_OF_PLAYERS_PER_COURT:
@@ -52,7 +58,17 @@ export function reducer(state: State = initialState, action: actions.All): State
         schedulerType: state.schedulerType,
         nbrOfPlayers: state.nbrOfPlayers,
         nbrOfCourts: state.nbrOfCourts,
-        nbrOfPlayersPerCourt: action.payload.nbrOfPlayersPerCourt
+        nbrOfPlayersPerCourt: action.payload.nbrOfPlayersPerCourt,
+        randomizeOrder: state.randomizeOrder
+
+      };
+      case actions.UPDATE_RANDOMIZE_ORDER:
+      return {
+        schedulerType: state.schedulerType,
+        nbrOfPlayers: state.nbrOfPlayers,
+        nbrOfCourts: state.nbrOfCourts,
+        nbrOfPlayersPerCourt: state.nbrOfPlayersPerCourt,
+        randomizeOrder: action.payload.randomizeOrder
 
       };
     default: {

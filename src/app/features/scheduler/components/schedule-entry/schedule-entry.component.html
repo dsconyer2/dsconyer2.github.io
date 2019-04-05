@@ -22,14 +22,16 @@
       <input class="form-control" type="number" name="nbrOfCourtsInput" id="nbrOfCourtsInput" ngModel
         [(ngModel)]="seCourts" #nbrOfCourtsInput="ngModel">
       <br>
-      <h5>Number of Players per Court</h5>
-      <select class="form-control" type="number" name="nbrOfPlayersPerCourtInput" id="nbrOfPlayersPerCourtInput" ngModel
-        [(ngModel)]="sePlayersPerCourt" #nbrOfPlayersPerCourtInput="ngModel">
-        <option value="2">2</option>
-        <option value="4">4</option>
-        </select>
-      <br>
     </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Randomize order" name="randomizeOrder" id="randomizeOrder"
+            ngModel [(ngModel)]="seRandomizeOrder" #randomizeOrder="ngModel">
+            <span>Randomize order</span>
+          </div>
+        </div>
+      </div>
     <button type="submit" class="btn btn-primary" (click)="submit()">Start</button>
   </div>
 </form>

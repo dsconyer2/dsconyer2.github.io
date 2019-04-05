@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, PlayerRemoveAll, SchedulerTypeUpdated } from '../../actions/scheduler.actions';
+import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, PlayerRemoveAll, SchedulerTypeUpdated, RandomizeOrderUpdated } from '../../actions/scheduler.actions';
 import { SchedulerState } from '../../reducers';
 
 @Component({
@@ -15,6 +15,7 @@ export class ScheduleEntryComponent implements OnInit {
   sePlayers: number;
   seCourts: number;
   sePlayersPerCourt: number;
+  seRandomizeOrder: boolean = false;
 
   constructor(private store: Store<SchedulerState>, private router: Router) { }
 
@@ -22,7 +23,9 @@ export class ScheduleEntryComponent implements OnInit {
   }
 
   submit() {
-    if (!(this.seType === 'King')) {
+    if (this.seType === 'King') {
+      this.sePlayersPerCourt = 4;
+    } else {
       this.seCourts = 0;
       this.sePlayersPerCourt = 2;
     }
@@ -34,6 +37,7 @@ export class ScheduleEntryComponent implements OnInit {
     this.store.dispatch(new NbrOfPlayersUpdated(this.sePlayers));
     this.store.dispatch(new NbrOfCourtsUpdated(this.seCourts));
     this.store.dispatch(new NbrOfPlayersPerCourtUpdated(this.sePlayersPerCourt));
+    this.store.dispatch(new RandomizeOrderUpdated(this.seRandomizeOrder));
 
     this.router.navigate(['/scheduleTournament']);
   }

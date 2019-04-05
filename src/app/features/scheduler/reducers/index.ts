@@ -21,7 +21,7 @@ export const selectSchedulerSettings = createSelector(selectSchedulerFeature, f 
 
 // 3. Create any "helpers" you might need (optional)
 const { selectAll: selectPlayerEntityArray } = fromPlayerManager.adapter.getSelectors(selectPlayers);
-// const { selectAll: selectSchedulerSettingsEntityArray } = fromSchedulerManager.adapter.getSelectors(selectSchedulerSettings);
+
 
 // 4. Create a selector for what the component needs.
 
@@ -31,6 +31,5 @@ export const selectSchedulerType = createSelector(selectSchedulerSettings, s => 
 export const selectNbrOfPlayers = createSelector(selectSchedulerSettings, s => s.nbrOfPlayers);
 export const selectNbrOfCourts = createSelector(selectSchedulerSettings, s => s.nbrOfCourts);
 export const selectNbrOfPlayersPerCourt = createSelector(selectSchedulerSettings, s => s.nbrOfPlayersPerCourt);
-// export const selectSchedulerSettingsEntities =
-//                 createSelector(selectSchedulerSettingsEntityArray, t => t.map(x => x as SchedulerSettings));
+export const selectRandomizeOrder = createSelector(selectSchedulerSettings, s => s.randomizeOrder);
 

@@ -39,7 +39,8 @@ export class SchedulerTypeUpdated implements Action {
       schedulerType,
       nbrOfPlayers: 0,
       nbrOfCourts: 0,
-      nbrOfPlayersPerCourt: 0
+      nbrOfPlayersPerCourt: 0,
+      randomizeOrder: false
     };
    }
 }
@@ -53,7 +54,8 @@ export class NbrOfPlayersUpdated implements Action {
       schedulerType: '',
       nbrOfPlayers,
       nbrOfCourts: 0,
-      nbrOfPlayersPerCourt: 0
+      nbrOfPlayersPerCourt: 0,
+      randomizeOrder: false
     };
    }
 }
@@ -67,7 +69,8 @@ export class NbrOfCourtsUpdated implements Action {
       schedulerType: '',
       nbrOfPlayers: 0,
       nbrOfCourts,
-      nbrOfPlayersPerCourt: 0
+      nbrOfPlayersPerCourt: 0,
+      randomizeOrder: false
     };
    }
 }
@@ -81,11 +84,27 @@ export class NbrOfPlayersPerCourtUpdated implements Action {
       schedulerType: '',
       nbrOfPlayers: 0,
       nbrOfCourts: 0,
-      nbrOfPlayersPerCourt
+      nbrOfPlayersPerCourt,
+      randomizeOrder: false
+    };
+   }
+}
+
+export const UPDATE_RANDOMIZE_ORDER = '[schedulerFeature] update  randomizeOrder';
+export class RandomizeOrderUpdated implements Action {
+  readonly type =  UPDATE_RANDOMIZE_ORDER;
+  payload: SchedulerSettings;
+  constructor(randomizeOrder: boolean) {
+    this.payload = {
+      schedulerType: '',
+      nbrOfPlayers: 0,
+      nbrOfCourts: 0,
+      nbrOfPlayersPerCourt: 0,
+      randomizeOrder
     };
    }
 }
 
 
 // Discriminated Union Type  http://www.typescriptlang.org/docs/handbook/advanced-types.html
-export type All = PlayerAdded | PlayerRemoveAll | SchedulerTypeUpdated | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated;
+export type All = PlayerAdded | PlayerRemoveAll | SchedulerTypeUpdated | NbrOfPlayersUpdated | NbrOfCourtsUpdated | NbrOfPlayersPerCourtUpdated| RandomizeOrderUpdated;

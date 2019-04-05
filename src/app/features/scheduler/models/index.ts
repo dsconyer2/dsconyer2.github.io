@@ -12,6 +12,7 @@ export interface SchedulerSettings {
   nbrOfPlayers: number;
   nbrOfCourts: number;
   nbrOfPlayersPerCourt: number;
+  randomizeOrder: boolean;
 }
 
 export interface MatchPriorityEntry {

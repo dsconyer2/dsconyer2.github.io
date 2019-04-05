@@ -24,6 +24,7 @@ export class ScheduleTournamentComponent implements OnInit {
   playerList2: Player[] = [];
   useEvenPlayerLogic = false;
   isScheduleTypeKing = true;
+  randomizeOrder: boolean;
 
   rounds: RoundData[] = [];
   courtHeaders: string[] = [];
@@ -31,15 +32,20 @@ export class ScheduleTournamentComponent implements OnInit {
   constructor(private store: Store<SchedulerState>) { }
 
   ngOnInit() {
-    this.store.select(selectPlayerEntities).subscribe((players: Player[]) => {
-      players.forEach(aPlayer => this.playerList1.push(aPlayer));
-    });
     this.store.select(selectSchedulerSettings).subscribe((settings: SchedulerSettings) => {
       this.isScheduleTypeKing = settings.schedulerType === 'King';
       this.nbrOfPlayers = settings.nbrOfPlayers;
       this.nbrOfCourts = settings.nbrOfCourts;
       this.playersPerCourt = settings.nbrOfPlayersPerCourt;
+      this.randomizeOrder = settings.randomizeOrder;
     });
+
+    this.store.select(selectPlayerEntities).subscribe((players: Player[]) => {
+      players.forEach(aPlayer => this.playerList1.push(aPlayer));
+    });
+
+    if(this.randomizeOrder) {this.playerList1.sort(function() { return 0.5 - Math.random() });};
+
     this.schedulePLayers();
   }
 
