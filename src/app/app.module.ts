@@ -14,6 +14,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SchedulerModule } from './features/scheduler/scheduler.module';
 import { reducers } from './reducers';
 import { PlayerContactModule } from './features/player-contact/player-contact.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PlayerContactModule } from './features/player-contact/player-contact.mo
     HomeComponent
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     AppRoutingModule,
     MatMenuModule,

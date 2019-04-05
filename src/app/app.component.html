@@ -7,23 +7,23 @@
 <div class="bs-component">
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarColor01" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="navbarColor01" data-toggle="collapse" data-target=".navbar-collapse">
+    
+    <div class="collapse navbar-collapse" id="navbarColor01" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#" [routerLink]="['/home']" routerLinkActive="class='nav-link active'">Home</a>
+          <a class="nav-link" (click)="isCollapsed = !isCollapsed" href="#" [routerLink]="['/home']" routerLinkActive="class='nav-link active'">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" [routerLink]="['/scheduler']" routerLinkActive="class='nav-link active'">Scheduler</a>
+          <a class="nav-link" (click)="isCollapsed = !isCollapsed" href="#" [routerLink]="['/scheduler']" routerLinkActive="class='nav-link active'">Scheduler</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" [routerLink]="['/playerContact']" routerLinkActive="class='nav-link active'">Player Contacts</a>
+          <a class="nav-link" (click)="isCollapsed = !isCollapsed" href="#" [routerLink]="['/playerContact']" routerLinkActive="class='nav-link active'">Player Contacts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" [routerLink]="['/help']" routerLinkActive="class='nav-link active'">About</a>
+          <a class="nav-link" (click)="isCollapsed = !isCollapsed" href="#" [routerLink]="['/help']" routerLinkActive="class='nav-link active'">About</a>
         </li>
       </ul>
     </div>
