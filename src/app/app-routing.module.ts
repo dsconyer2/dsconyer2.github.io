@@ -5,6 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ScheduleEntryComponent } from './features/scheduler/components/schedule-entry/schedule-entry.component';
 import { ScheduleTournamentComponent } from './features/scheduler/components/schedule-tournament/schedule-tournament.component';
 import { PlayerContactComponent } from './features/player-contact/player-contact.component';
+import { GroupManagerComponent } from './features/player-contact/components/group-manager/group-manager.component';
+import { GroupPlayerManagerComponent } from './features/player-contact/components/group-player-manager/group-player-manager.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,14 @@ const routes: Routes = [
   {
     path: 'playerContact',
     component: PlayerContactComponent
+  },
+  {
+    path: 'groupManager',
+    component: GroupManagerComponent
+  },
+  {
+    path: 'groupPlayerManager',
+    component: GroupPlayerManagerComponent
   },
   {
     path: 'help',

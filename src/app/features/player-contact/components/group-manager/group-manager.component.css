@@ -1,0 +1,55 @@
+header {
+    background-color: #3F51B5;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 2px -2px #444;
+  }
+  
+  #container {
+    width: 420px;
+    display: block;
+    position: relative;
+    margin: 50px auto;
+    background: #fff;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .user {
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    width: 10%;
+  }
+  
+  .user img {
+    width: 40px;
+    border-radius: 50%;
+    border: #fff 2px solid;
+  }
+  
+  .add-group {
+    border: 1px solid #f1f1f1;
+    height: 55px;
+    padding: 5px;
+    padding-left: 25px;
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    color: #444;
+  }
+  
+  .add-group:focus {
+    outline: none;
+  }
+  
+  .group-list {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .group-list li {
+    display: block;
+  }
+  

@@ -8,18 +8,18 @@ export interface PlayerContactEntity {
 
 export interface State extends EntityState<PlayerContactEntity> { }
 
-// const initialState: State = {
-//   ids: ['1', '2'],
-//   entities: {
-//     1: { id: 1, playerContactId: 1, name: 'Daryl Sconyers'},
-//     2: { id: 2, playerContactId: 2, name: 'Rose Sconyers'}
-//   }
-// };
 const initialState: State = {
-  ids: [],
+  ids: ['1', '2'],
   entities: {
+    1: { id: 1, playerContactId: 1, name: 'Daryl Sconyers'},
+    2: { id: 2, playerContactId: 2, name: 'Rose Sconyers'}
   }
 };
+// const initialState: State = {
+//   ids: [],
+//   entities: {
+//   }
+// };
 
 export const adapter = createEntityAdapter<PlayerContactEntity>();
 

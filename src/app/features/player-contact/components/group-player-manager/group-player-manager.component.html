@@ -1,0 +1,49 @@
+<div id="container">
+  <header>
+    <div class="heading-user">
+      <strong>Group List</strong>
+    </div>
+  </header>
+  <select class="form-control" type="text" name="groupSelector" id="groupSelector" ngModel #groupSelector="ngModel"
+    [(ngModel)]="selectedGroup" (change)='groupSelected()'>
+    <option *ngFor="let group of (groups$ | async)" [ngValue]='group'>{{group.name}}</option>
+  </select>
+</div>
+<div class="row">
+  <div class="column">
+    <header>Players in the Group</header>
+    <div *ngIf="selectedGroup">
+      <ul class="contact-list" *ngFor="let gp of (groupPlayers$ | async)">
+        <div *ngIf="gp.groupPlayerId === selectedGroup.playerIds">
+          <li *ngFor="let player of gp.players">
+            <div class="contact-container">
+              <i class="fa fa-user fa-2x contact-icon"></i>
+              <div class="contact-info">
+                <h3 class="heading--name">{{ player.name }}</h3>
+              </div>
+              <button class="contact-action" (click)="removePlayer(player)">
+                <i class="fa fa-minus-square fa-2x"></i>
+              </button>
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div class="column">
+    <header>Available Players</header>
+    <ul class="contact-list">
+      <li *ngFor="let contact of (playerContacts$ | async)">
+        <div class="contact-container">
+          <i class="fa fa-user fa-2x contact-icon"></i>
+          <div class="contact-info">
+            <h3 class="heading--name">{{ contact.name }}</h3>
+          </div>
+          <button class="contact-action" (click)="addPlayer(contact)">
+            <i class="fa fa-plus-square fa-2x"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

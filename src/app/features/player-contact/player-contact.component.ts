@@ -17,7 +17,6 @@ export class PlayerContactComponent implements OnInit {
   highestId: number;
 
 	constructor(private store: Store<PlayerContactState>) {
-		this.contactID = 0;
 	}
 
   ngOnInit() {
@@ -26,9 +25,10 @@ export class PlayerContactComponent implements OnInit {
   }
 
   addContact(contactName:string, id:any) { 
-    const newId = 1 + id;
-    console.log('Highest Id = ', newId);
-    this.store.dispatch(new PlayerContactAdded(this.contactID++, contactName));
+    this.highestId = 0;
+    this.lastPlayerContact$.forEach(aPlayer => this.highestId = Math.max(this.highestId, aPlayer.playerContactId))
+    this.highestId++;
+    this.store.dispatch(new PlayerContactAdded(this.highestId, contactName));
   }
 
 }
