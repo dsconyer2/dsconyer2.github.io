@@ -21,6 +21,9 @@
               <div class="contact-info">
                 <h3 class="heading--name">{{ player.name }}</h3>
               </div>
+              <button class="contact-action" (click)="toggleEnablePlayer(player)">
+                  <i [class]="enablePlayerClass(player)"></i>
+              </button>
               <button class="contact-action" (click)="removePlayer(player)">
                 <i class="fa fa-minus-square fa-2x"></i>
               </button>
@@ -39,7 +42,7 @@
           <div class="contact-info">
             <h3 class="heading--name">{{ contact.name }}</h3>
           </div>
-          <button class="contact-action" (click)="addPlayer(contact)">
+          <button class="contact-action" (click)="addPlayer(contact)" *ngIf="selectedGroup">
             <i class="fa fa-plus-square fa-2x"></i>
           </button>
         </div>

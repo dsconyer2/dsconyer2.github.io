@@ -39,6 +39,35 @@ export class GroupPlayerManagerComponent implements OnInit {
     this.updatePlayers();
   }
 
+  enablePlayerClass(player: PlayerContact) {
+    if (this.enabledGroupPlayers.players.find(aPlayer => aPlayer === player)) {
+      return "fa fa-minus-square fa-2x";
+      // return "fa fa-check-square-o fa-2x";
+    } else {
+      return "fa fa-plus-square fa-2x";
+      // return "fa fa-square-o fa-2x";
+    }
+  }
+
+  toggleEnablePlayer(player: PlayerContact) {
+    if (this.enabledGroupPlayers.players.find(aPlayer => aPlayer === player)) {
+      this.disablePlayer(player);
+    } else {
+      this.enablePlayer(player);
+    }
+  }
+
+  enablePlayer(player: PlayerContact) {
+    let players = this.enabledGroupPlayers.players.slice();
+    players.push(player);
+    this.store.dispatch(new GroupPlayerAdded(this.enabledGroupPlayers.groupPlayerId, players));
+  }
+
+  disablePlayer(player: PlayerContact) {
+    let players = this.enabledGroupPlayers.players.filter(aPlayer => aPlayer !== player);
+    this.store.dispatch(new GroupPlayerRemoved(this.enabledGroupPlayers.groupPlayerId, players));
+  }
+
   addPlayer(player: PlayerContact) {
     let players = this.groupPlayers.players.slice();
     players.push(player);
@@ -49,4 +78,6 @@ export class GroupPlayerManagerComponent implements OnInit {
     let players = this.groupPlayers.players.filter(aPlayer => aPlayer !== player);
     this.store.dispatch(new GroupPlayerRemoved(this.groupPlayers.groupPlayerId, players));
   }
+
+ 
 }
