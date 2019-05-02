@@ -354,7 +354,7 @@ export class ScheduleTournamentComponent implements OnInit {
   }
 
   pickOpponents(aRound: RoundData) {
-      console.log('Match Round = ', aRound.roundId);
+      // console.log('Match Round = ', aRound.roundId);
       aRound.matches.forEach(aMatch => {
           if (!aMatch.opponentsAssigned) {
             const oppMatch = this.getPriorityMatch(aMatch, aRound.matches);
@@ -410,7 +410,7 @@ export class ScheduleTournamentComponent implements OnInit {
     aPlayer.courtsPlayed[courtNbr] = count;
     // console.log('Player court counts');
     // console.table(aPlayer.courtsPlayed);
-    console.log('Player', aPlayer.playerId, ' Court ', courtNbr, ' Count = ', playerCount, ' CourtsPlayed = ', aPlayer.courtsPlayed[courtNbr]);
+    // console.log('Player', aPlayer.playerId, ' Court ', courtNbr, ' Count = ', playerCount, ' CourtsPlayed = ', aPlayer.courtsPlayed[courtNbr]);
   }
 
   assignCourtToMatch(aMatch: Match, courtNbr: number) {
@@ -468,7 +468,7 @@ export class ScheduleTournamentComponent implements OnInit {
               // console.table(aMatch.courtPriority);
           }
       });
-      console.log('Match ', matchAssigned.matchId, ' assigned to court ', courtNbr);
+      // console.log('Match ', matchAssigned.matchId, ' assigned to court ', courtNbr);
       this.assignCourtToMatch(matchAssigned, courtNbr);
     }
   }
@@ -541,7 +541,7 @@ runAnalysisReport() {
 schedulePLayers() {
     this.initialize();
     this.processRounds();
-    this.runAnalysisReport();
+    // this.runAnalysisReport();
   }
 
 }
