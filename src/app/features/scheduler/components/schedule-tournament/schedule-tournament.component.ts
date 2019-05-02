@@ -26,6 +26,9 @@ export class ScheduleTournamentComponent implements OnInit {
   isScheduleTypeKing = true;
   randomizeOrder: boolean;
 
+  byeIndexes: number[] = [];
+  byesNeeded = 0;
+
   rounds: RoundData[] = [];
   courtHeaders: string[] = [];
 
@@ -44,7 +47,7 @@ export class ScheduleTournamentComponent implements OnInit {
       players.forEach(aPlayer => this.playerList1.push(aPlayer));
     });
 
-    if(this.randomizeOrder) {this.playerList1.sort(function() { return 0.5 - Math.random() });};
+    if (this.randomizeOrder) {this.playerList1.sort(function() { return 0.5 - Math.random(); }); }
 
     this.schedulePLayers();
   }
@@ -90,6 +93,54 @@ export class ScheduleTournamentComponent implements OnInit {
     }
   }
 
+  setByeIndexesForEvenNumberOfPlayers() {
+    if (this.useEvenPlayerLogic) {
+      // For even player logic the first player never rotates in the player matching logic.
+      // This means we have to pick the players who have played the most to sit out.
+      // Because you can have many players with the same number of games played you need to
+      //  start in the middle of the list to make things distribute better.
+      this.byeIndexes.length = 0;
+      const playCounts = [];
+      const sortedPlayCounts = [];
+      for (let index = 0; index < this.playerList1.length; index++) {
+        let gamesPlayed =
+          this.gamesPlayed(this.playerList1[index]) +
+          this.gamesPlayed(this.playerList2[index]);
+        if (this.rounds.length > 0) {
+          const prevByes = this.rounds.slice().pop().byes;
+          if (prevByes.includes(this.playerList1[index])) { --gamesPlayed; }
+          if (prevByes.includes(this.playerList2[index])) { --gamesPlayed; }
+        }
+        playCounts[index] = gamesPlayed;
+        sortedPlayCounts[index] = gamesPlayed;
+      }
+      // Need to create a sorted list of games played to identify which index has the most games.
+      sortedPlayCounts.sort((a, b) => b - a);
+      // Based on the byesNeeded, pick that many values from the top of the sorted list.
+      const middleIndexValue: number = Math.trunc(this.playerList1.length / 2);
+      for (let i = 0; i < this.byesNeeded; i++) {
+        const gamesPlayedSelected = sortedPlayCounts[i];
+        let byeIndexSelected = false;
+        // Start in the middle of the playerList1, add the index that matches gamesPlayedSelected to the byeIndexs
+        // if it has not already been added.
+        for (let j = 0; j < this.playerList1.length; j++) {
+          let byeIndex = j + middleIndexValue;
+          if (byeIndex >= this.playerList1.length) {byeIndex = byeIndex - this.playerList1.length; }
+          if (!byeIndexSelected && !this.byeIndexes.includes(byeIndex)) {
+            if (playCounts[byeIndex] === gamesPlayedSelected) {
+              this.byeIndexes.push(byeIndex);
+              byeIndexSelected = true;
+            }
+          }
+        }
+
+      }
+      // console.log('Bye indexes');
+      // console.table(this.byeIndexes);
+      // console.table(sortedPlayCounts);
+      // console.table(playCounts);
+    }
+  }
 
   processRounds() {
     let indexBreak: number = Math.trunc(this.playerList1.length / 2);
@@ -107,28 +158,33 @@ export class ScheduleTournamentComponent implements OnInit {
   //  console.log('Player list 2');
   //  console.table(this.playerList2);
 
-    const byeIndexes = [];
     if (this.nbrOfByePlayers > 0) {
-        const byesNeeded = Math.round(this.nbrOfByePlayers / 2);
-        const byeIncrement = indexBreak / byesNeeded;
-        // console.log('Nbr of Bye Players = ', this.nbrOfByePlayers);
-        // console.log('Byes Needed = ', byesNeeded);
-        // console.log('Index break = ', indexBreak);
-        let byeIndex = 0;
-        for (let index = 0; index < byesNeeded; index++) {
-          byeIndexes.push(Math.trunc((indexBreak - 1) - byeIndex));
-          byeIndex = byeIndex + byeIncrement;
+      this.byesNeeded = Math.round(this.nbrOfByePlayers / 2);
+      if (!this.useEvenPlayerLogic) {
+          //  For odd player counts you determine who sits out by just selecting
+          //  indexes that are evenly spaced through the player list.
+          const byeIncrement = indexBreak / this.byesNeeded;
+          // console.log('Nbr of Bye Players = ', this.nbrOfByePlayers);
+          // console.log('Byes Needed = ', byesNeeded);
+          // console.log('Index break = ', indexBreak);
+          let byeIndex = 0;
+          for (let index = 0; index < this.byesNeeded; index++) {
+            this.byeIndexes.push(Math.trunc((indexBreak - 1) - byeIndex));
+            byeIndex = byeIndex + byeIncrement;
+          }
         }
     }
-    //  console.log('Bye indexes');
-    //  console.table(byeIndexes);
+    // console.log('Bye indexes');
+    // console.table(this.byeIndexes);
 
     for (let rounds = 1; rounds < this.nbrOfPlayers + 1; rounds++) {
+      // Set the bye indexes for even number of players
+      this.setByeIndexesForEvenNumberOfPlayers();
       // Gather data for the round.
       const thisRound: RoundData = { roundId: rounds, matches: [], byes: [], byeLabel: ''};
       for (let index = 0; index < indexBreak; index++) {
         //  console.log('index = ', index);
-        if (byeIndexes.includes(index)) {
+        if (this.byeIndexes.includes(index)) {
           //  console.log('bye ', this.playerList1[index].playerId);
           thisRound.byes.push(this.playerList1[index]);
           if (index <= this.playerList2.length - 1) {
@@ -215,6 +271,12 @@ export class ScheduleTournamentComponent implements OnInit {
     });
     byeLabel = byeLabel.slice(0, byeLabel.length - 2);
     aRound.byeLabel = byeLabel;
+  }
+
+  gamesPlayed(aPlayer: Player) {
+    let gameCount = 0;
+    Object.keys(aPlayer.playedAgainst).forEach(aKey => gameCount += aPlayer.playedAgainst[aKey]);
+    return (gameCount / (this.playersPerCourt / 2));
   }
 
   countPlayedAgainst(aPlayer: Player, opponents: Player[]) {
@@ -348,6 +410,7 @@ export class ScheduleTournamentComponent implements OnInit {
     aPlayer.courtsPlayed[courtNbr] = count;
     // console.log('Player court counts');
     // console.table(aPlayer.courtsPlayed);
+    console.log('Player', aPlayer.playerId, ' Court ', courtNbr, ' Count = ', playerCount, ' CourtsPlayed = ', aPlayer.courtsPlayed[courtNbr]);
   }
 
   assignCourtToMatch(aMatch: Match, courtNbr: number) {
@@ -380,25 +443,32 @@ export class ScheduleTournamentComponent implements OnInit {
       let leastCount = this.nbrOfPlayers * 2;
       const orderedMatches = aRound.matches.filter(m => m.isPrimary && m.courtAssigned === 0 )
                         .sort((a, b) => this.minCourtPriority(a) - this.minCourtPriority(b));
+      // console.log('OrderedMatches');
+      // console.table(orderedMatches);
       orderedMatches.forEach(aMatch => {
           if (matchAssigned === undefined) {
             matchAssigned = aMatch;
           }
-          // tslint:disable-next-line:forin
-          // for (const courtId in aMatch.courtPriority) {
           const courtCount = aMatch.courtPriority[courtNbr];
           if (!isNaN(courtCount) && courtCount <= leastCount) {
               leastCount = courtCount;
               matchAssigned = aMatch;
-            }
-          // }
-          // console.log('Match id = ', aMatch.matchId);
-          // console.log('Court = ', courtNbr);
-          // console.log('Least Count = ', leastCount);
-          // console.table(aMatch.courtPriority);
-
+              // console.log('Round = ', aRound.roundId);
+              // console.log('Match id = ', aMatch.matchId);
+              // console.log('Court = ', courtNbr);
+              // console.log('Least Count = ', leastCount);
+              // aMatch.team1.forEach(aPlayer => {
+              //   console.log('Player = ', aPlayer.playerId);
+              //   console.log('Court1 = ', aPlayer.courtsPlayed[1], 'Court2 = ', aPlayer.courtsPlayed[2], 'Court3 = ', aPlayer.courtsPlayed[3]); }
+              // );
+              // aMatch.team2.forEach(aPlayer => {
+              //   console.log('Player = ', aPlayer.playerId);
+              //   console.log('Court1 = ', aPlayer.courtsPlayed[1], 'Court2 = ', aPlayer.courtsPlayed[2], 'Court3 = ', aPlayer.courtsPlayed[3]); }
+              // );
+              // console.table(aMatch.courtPriority);
+          }
       });
-      // console.log('Match ', matchAssigned.matchId, ' assigned to court ', courtNbr);
+      console.log('Match ', matchAssigned.matchId, ' assigned to court ', courtNbr);
       this.assignCourtToMatch(matchAssigned, courtNbr);
     }
   }
@@ -406,9 +476,11 @@ export class ScheduleTournamentComponent implements OnInit {
   scheduleCourts(aRound: RoundData) {
     this.prioritizeCourts(aRound);
     this.pickCourts(aRound);
+    // sort matches by court assigned.  This makes them show up on the report correctly.
+    aRound.matches.sort((a, b) => a.courtAssigned - b.courtAssigned);
   }
 
-  runAnalysisReport() {
+runAnalysisReport() {
     console.log('Tournament type is King = ', this.isScheduleTypeKing);
     this.rounds.forEach(aRound => {
       console.log('Round = ', aRound.roundId);
@@ -429,10 +501,44 @@ export class ScheduleTournamentComponent implements OnInit {
     });
     console.log('My Players = ', this.players$);
 
+    // Dump out player information
+    this.playerList1.length = 0;
+    this.store.select(selectPlayerEntities).subscribe((players: Player[]) => {
+      players.forEach(aPlayer => this.playerList1.push(aPlayer));
+    });
+
+    this.playerList1.forEach(aPlayer => {
+      console.log('Player info for player ', aPlayer.playerId);
+      console.log('Courts played');
+      for (let courtNbr = 1; courtNbr < this.nbrOfCourts + 1; courtNbr++) {
+        console.log('Court ', courtNbr, ' = ', aPlayer.courtsPlayed[courtNbr]);
+      }
+      let totalGamesPlayed = 0;
+      let maxPlayed = 0;
+      let minPlayed = this.nbrOfPlayers * 2;
+      let notPlayed = 0;
+      console.log('Opponent info');
+      for (let opponentId = 1; opponentId < this.nbrOfPlayers + 1; opponentId++) {
+        // console.log('Played Player ', opponentId, ' = ', aPlayer.playedAgainst[opponentId]);
+        if (aPlayer.playedAgainst[opponentId]) {
+          totalGamesPlayed += aPlayer.playedAgainst[opponentId];
+          if (maxPlayed < aPlayer.playedAgainst[opponentId]) { maxPlayed = aPlayer.playedAgainst[opponentId]; }
+          if (minPlayed > aPlayer.playedAgainst[opponentId]) { minPlayed = aPlayer.playedAgainst[opponentId]; }
+        } else {
+          notPlayed++;
+        }
+      }
+      console.log('Min played = ', minPlayed);
+      console.log('Max played = ', maxPlayed);
+      console.log('Not played = ', notPlayed);
+      console.log('Total games calculated = ', totalGamesPlayed );
+      console.log('Total games played = ', this.gamesPlayed(aPlayer) );
+    });
+
   }
 
 
-  schedulePLayers() {
+schedulePLayers() {
     this.initialize();
     this.processRounds();
     this.runAnalysisReport();

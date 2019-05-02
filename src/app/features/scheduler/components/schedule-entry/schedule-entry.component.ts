@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, PlayerRemoveAll, SchedulerTypeUpdated, RandomizeOrderUpdated } from '../../actions/scheduler.actions';
+import { NbrOfCourtsUpdated, NbrOfPlayersPerCourtUpdated, NbrOfPlayersUpdated, PlayerAdded, PlayerRemoveAll, RandomizeOrderUpdated, SchedulerTypeUpdated } from '../../actions/scheduler.actions';
 import { SchedulerState } from '../../reducers';
 
 @Component({
@@ -15,7 +15,7 @@ export class ScheduleEntryComponent implements OnInit {
   sePlayers: number;
   seCourts: number;
   sePlayersPerCourt: number;
-  seRandomizeOrder: boolean = false;
+  seRandomizeOrder = false;
 
   constructor(private store: Store<SchedulerState>, private router: Router) { }
 
@@ -31,7 +31,7 @@ export class ScheduleEntryComponent implements OnInit {
     }
     this.store.dispatch(new PlayerRemoveAll());
     for (let index = 0; index < this.sePlayers; index++) {
-      this.store.dispatch(new PlayerAdded(index, true, true, 0, {}, {}));
+      this.store.dispatch(new PlayerAdded(index + 1, true, true, 0, {}, {}));
     }
     this.store.dispatch(new SchedulerTypeUpdated(this.seType));
     this.store.dispatch(new NbrOfPlayersUpdated(this.sePlayers));
